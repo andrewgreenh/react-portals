@@ -1,0 +1,8 @@
+{
+  "name": "react-portals",
+  "version": "0.0.1",
+  "description": "React library to send nodes into a node at a different place in the component tree.",
+  "main": "index.js",
+  "author": "Andreas Roth <art_github@rtline.de>",
+  "license": "MIT"
+}
