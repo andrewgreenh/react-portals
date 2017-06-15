@@ -1,6 +1,6 @@
 {
   "name": "react-portals",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "author": "Andreas Roth <art_github@rtline.de>",
   "bugs": {
     "url": "https://github.com/andreasgruenh/react-portals/issues"
@@ -18,7 +18,10 @@
     "babel-preset-es2016": "^6.24.1",
     "babel-preset-es2017": "^6.24.1",
     "babel-preset-react": "^6.24.1",
-    "nodemon": "^1.11.0"
+    "jest": "^20.0.4",
+    "lodash": "^4.17.4",
+    "nodemon": "^1.11.0",
+    "rimraf": "^2.6.1"
   },
   "files": [
     "dist"
@@ -43,6 +46,10 @@
   },
   "scripts": {
     "build": "babel src --out-dir dist",
-    "watch": "nodemon --watch src --exec \"yarn run build\""
+    "clean": "rimraf dist",
+    "prepublish": "npm run clean && npm run build",
+    "test": "jest",
+    "watch": "nodemon --watch src --exec \"yarn run build\"",
+    "watch-tests": "jest --watch"
   }
 }
