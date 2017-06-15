@@ -3,6 +3,9 @@
 Unopinionated React library to render content into another place of the React tree (**without losing the React context**).
 This is especially useful for modals or popovers.
 
+[![npm](https://img.shields.io/npm/v/react-portals.svg?style=flat-square)](https://www.npmjs.com/package/react-portals)
+
+
 ## Advantages
 - Build your own portals and portal targets for your own needs with the provided **higher order components**
 - Decide where your portaled content should be rendered by placing the portal target whereever you want it in your React tree.
