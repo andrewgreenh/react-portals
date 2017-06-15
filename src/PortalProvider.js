@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import withContext from 'recompose';
+import withContext from 'recompose/withContext';
 import PortalConnector from './PortalConnector';
 
 export const portalConnector = new PortalConnector();
