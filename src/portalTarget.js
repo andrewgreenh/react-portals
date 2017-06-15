@@ -1,5 +1,3 @@
-import values from 'lodash/values';
-import omit from 'lodash/omit';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
@@ -12,7 +10,7 @@ const portalTarget = name => PortalTargetComponent => {
   class PortalTarget extends Component {
     constructor(props) {
       super(props);
-      this.state = { childrenById: null };
+      this.state = { childrenById: {} };
     }
     componentWillMount() {
       this.props.portalConnector.registerTarget(name, this);
@@ -24,12 +22,18 @@ const portalTarget = name => PortalTargetComponent => {
     }
 
     render() {
-      return <PortalTargetComponent>{values(this.state.childrenById)}</PortalTargetComponent>;
+      return (
+        <PortalTargetComponent>
+          {Object.values(this.state.childrenById)}
+        </PortalTargetComponent>
+      );
     }
 
     updateChild(id, child) {
       if (child == null) {
-        this._temporaryChildrenById = omit(this._temporaryChildrenById, [id]);
+        const clonedChildrenById = Object.assign({}, this._temporaryChildrenById);
+        delete clonedChildrenById[id];
+        this._temporaryChildrenById = clonedChildrenById;
         this.setState({
           childrenById: this._temporaryChildrenById,
         });

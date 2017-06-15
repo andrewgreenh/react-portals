@@ -6,7 +6,6 @@
     "url": "https://github.com/andreasgruenh/react-portals/issues"
   },
   "dependencies": {
-    "lodash": "^4.17.4",
     "prop-types": "^15.5.10",
     "recompose": "^0.23.5"
   },
@@ -21,16 +20,26 @@
     "babel-preset-react": "^6.24.1",
     "nodemon": "^1.11.0"
   },
-  "files": ["dist"],
-  "keywords": ["react", "portal", "portals", "modal", "modals", "popover", "popovers"],
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "react",
+    "portal",
+    "portals",
+    "modal",
+    "modals",
+    "popover",
+    "popovers"
+  ],
   "license": "MIT",
   "main": "dist/index.js",
   "peerDependencies": {
     "react": "^0.14.0 || ^15.0.0-0 || ^16.0.0-0"
   },
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/andreasgruenh/react-portals/"
+    "type": "git",
+    "url": "https://github.com/andreasgruenh/react-portals/"
   },
   "scripts": {
     "build": "babel src --out-dir dist",

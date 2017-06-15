@@ -1,12 +1,13 @@
-import bindAll from 'lodash/bindAll';
-
 export default class PortalConnector {
   constructor() {
     this.nextId = 1;
     this.targetsByName = {};
     this.targetsById = {};
 
-    bindAll(this, ['registerTarget', 'removeTarget', 'addChild', 'updateChild', 'removeChild']);
+    const methodNames = [
+      'registerTarget', 'removeTarget', 'addChild', 'updateChild', 'removeChild',
+    ];
+    methodNames.forEach(name => { this[name] = this[name].bind(this); });
   }
 
   registerTarget(name, portalTarget) {
