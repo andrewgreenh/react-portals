@@ -20,6 +20,10 @@ yarn add react-portals
 ## Example
 An example implementation of a modal that uses this portal library can be seen [here](https://andreasgruenh.github.io/react-portals-example/).
 
+## Concepts
+The main concepts in this library are **portals** and **portalTargets**. A portal is a component, that sends some ReactNodes to another location in the React tree. The location where these nodes land is called a portalTarget. Each portalTarget has a specified name which can be referenced when building a portal. This way, each portal sends the content to exactly one portalTarget. To enable the communication between portals and portalTargets, the PortalProvider needs to be rendered at the top of the component tree. This component attaches a portalConnector to the [React context](https://facebook.github.io/react/docs/context.html). **Note: You should never access the portalConnector through the context, as this API could change in the future, instead, use the `withPortalConnector` HOC.** The portalConnector provides an imperative API which is used to add, update and remove portaled content in a portalTarget.
+
+
 ## Usage
 ### PortalProvider
 At first you have to add the `PortalProvider` at the top of your React tree. This manages the connection between portals and portalTargets through React context.
