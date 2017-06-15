@@ -1,10 +1,9 @@
-import _ from 'lodash';
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import PortalConnector from './PortalConnector';
 
-const portal = (targetName, updaterName = 'updateChild', idName = 'id') => Component => {
-  class Portal extends React.Component {
+const portal = (targetName, updaterName = 'updateChild', idName = 'id') => PortalComponent => {
+  class Portal extends Component {
     constructor(props) {
       super(props);
       this.state = { portalId: null };
@@ -18,7 +17,7 @@ const portal = (targetName, updaterName = 'updateChild', idName = 'id') => Compo
       const props = {
         ...this.props,
         [updaterName]: child => {
-          if (_.isNil(child)) {
+          if (child == null) {
             this.context.portalConnector.removeChild(this.state.portalId);
             return;
           }
@@ -26,7 +25,7 @@ const portal = (targetName, updaterName = 'updateChild', idName = 'id') => Compo
         },
         [idName]: this.state.portalId,
       };
-      return <Component {...props} />;
+      return <PortalComponent {...props} />;
     }
   }
 

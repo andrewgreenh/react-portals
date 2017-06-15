@@ -1,11 +1,15 @@
-import _ from 'lodash';
-import React from 'react';
+import values from 'lodash/values';
+import omit from 'lodash/omit';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { getContext, compose, wrapDisplayName, setDisplayName } from 'recompose';
+import compose from 'recompose/compose';
+import getContext from 'recompose/getContext';
+import setDisplayName from 'recompose/setDisplayName';
+import wrapDisplayName from 'recompose/wrapDisplayName';
 import PortalConnector from './PortalConnector';
 
-const portalTarget = name => Component => {
-  class PortalTarget extends React.Component {
+const portalTarget = name => PortalTargetComponent => {
+  class PortalTarget extends Component {
     constructor(props) {
       super(props);
       this.state = { childrenById: null };
@@ -20,12 +24,12 @@ const portalTarget = name => Component => {
     }
 
     render() {
-      return <Component>{_.values(this.state.childrenById)}</Component>;
+      return <PortalTargetComponent>{values(this.state.childrenById)}</PortalTargetComponent>;
     }
 
     updateChild(id, child) {
-      if (_.isNil(child)) {
-        this._temporaryChildrenById = _.omit(this._temporaryChildrenById, [id]);
+      if (child == null) {
+        this._temporaryChildrenById = omit(this._temporaryChildrenById, [id]);
         this.setState({
           childrenById: this._temporaryChildrenById,
         });

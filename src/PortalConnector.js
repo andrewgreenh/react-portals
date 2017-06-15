@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import bindAll from 'lodash/bindAll';
 
 export default class PortalConnector {
   constructor() {
@@ -6,7 +6,7 @@ export default class PortalConnector {
     this.targetsByName = {};
     this.targetsById = {};
 
-    _.bindAll(this, ['registerTarget', 'removeTarget', 'addChild', 'updateChild', 'removeChild']);
+    bindAll(this, ['registerTarget', 'removeTarget', 'addChild', 'updateChild', 'removeChild']);
   }
 
   registerTarget(name, portalTarget) {
