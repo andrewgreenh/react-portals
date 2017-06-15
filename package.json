@@ -1,14 +1,16 @@
 {
   "name": "react-portals",
-  "version": "0.0.1",
-  "description": "React library to send nodes into a node at a different place in the component tree.",
-  "main": "dist/index.js",
-  "scripts": {
-    "build": "babel src --out-dir dist",
-    "watch": "nodemon --watch src --exec \"yarn run build\""
-  },
+  "version": "1.0.0",
   "author": "Andreas Roth <art_github@rtline.de>",
-  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/andreasgruenh/react-portals/issues"
+  },
+  "dependencies": {
+    "lodash": "^4.17.4",
+    "prop-types": "^15.5.10",
+    "recompose": "^0.23.5"
+  },
+  "description": "React library to send nodes into a node at a different place in the component tree.",
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-core": "^6.25.0",
@@ -19,12 +21,19 @@
     "babel-preset-react": "^6.24.1",
     "nodemon": "^1.11.0"
   },
-  "dependencies": {
-    "lodash": "^4.17.4",
-    "prop-types": "^15.5.10",
-    "recompose": "^0.23.5"
-  },
+  "files": ["dist"],
+  "keywords": ["react", "portal", "portals", "modal", "modals", "popover", "popovers"],
+  "license": "MIT",
+  "main": "dist/index.js",
   "peerDependencies": {
     "react": "^0.14.0 || ^15.0.0-0 || ^16.0.0-0"
+  },
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/andreasgruenh/react-portals/"
+  },
+  "scripts": {
+    "build": "babel src --out-dir dist",
+    "watch": "nodemon --watch src --exec \"yarn run build\""
   }
 }
