@@ -1,8 +1,10 @@
+import omit from './omit';
+
 export default class PortalConnector {
   constructor() {
     this.nextId = 1;
     this.targetsByName = {};
-    this.targetsById = {};
+    this.targetsByChildId = {};
 
     const methodNames = [
       'registerTarget', 'removeTarget', 'addChild', 'updateChild', 'removeChild',
@@ -14,7 +16,10 @@ export default class PortalConnector {
     if (this.targetsByName[name]) {
       throw Error(`Portal with name ${name} already existing.`);
     }
-    this.targetsByName[name] = portalTarget;
+    this.targetsByName[name] = {
+      targetInstance: portalTarget,
+      childrenById: {},
+    };
   }
 
   removeTarget(name) {
@@ -25,20 +30,26 @@ export default class PortalConnector {
     const id = this.nextId++;
     const target = this.targetsByName[targetName];
     if (!target) throw new Error(`No target with name ${targetName} found.`);
-    this.targetsById[id] = target;
-    target.updateChild(id, child);
+    target.childrenById[id] = child;
+    this.targetsByChildId[id] = target;
+    target.targetInstance.updateChildren(Object.values(target.childrenById));
     return id;
   }
 
   updateChild(id, child) {
-    const target = this.targetsById[id];
+    const target = this.targetsByChildId[id];
     if (!target) throw new Error(`No target with id ${id} found.`);
-    target.updateChild(id, child);
+    target.childrenById = {
+      ...omit(target.childrenById, id),
+      [id]: child,
+    };
+    target.targetInstance.updateChildren(Object.values(target.childrenById));
   }
 
   removeChild(id) {
-    const target = this.targetsById[id];
+    const target = this.targetsByChildId[id];
     if (!target) throw new Error(`No target with id ${id} found.`);
-    target.updateChild(id, null);
+    target.childrenById = omit(target.childrenById, id);
+    target.targetInstance.updateChildren(Object.values(target.childrenById));
   }
 }

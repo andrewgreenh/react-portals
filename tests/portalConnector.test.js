@@ -17,15 +17,16 @@ describe('PortalConnector', () => {
       expect(() => portalConnector.registerTarget('name', {})).toThrow();
     });
 
-    it('should add the given argument behind the name', () => {
+    it('should add the given target to targetsByName', () => {
       // arrange
-      const target = {};
+      const targetInstance = {};
 
       // act
-      portalConnector.registerTarget('name', target);
+      portalConnector.registerTarget('name', targetInstance);
 
       // assert
-      expect(portalConnector.targetsByName.name).toBe(target);
+      expect(portalConnector.targetsByName.name.targetInstance).toBe(targetInstance);
+      expect(portalConnector.targetsByName.name.childrenById).toEqual({});
     });
   });
 
@@ -51,7 +52,7 @@ describe('PortalConnector', () => {
   describe('addChild', () => {
     it('should create unique ids', () => {
       // arrange
-      const target = { updateChild: jest.fn() };
+      const target = { updateChildren: jest.fn() };
       portalConnector.registerTarget('name', target);
       const ids = new Set();
 
@@ -69,15 +70,41 @@ describe('PortalConnector', () => {
 
     it('should call updateChild on the correct target', () => {
       // arrange
-      const target = { updateChild: jest.fn() };
+      const target = { updateChildren: jest.fn() };
       portalConnector.registerTarget('name', target);
-      const child = {};
+      const child = { id: 'first' };
 
       // act
-      const id = portalConnector.addChild('name', child);
+      portalConnector.addChild('name', child);
 
       // assert
-      expect(target.updateChild).toHaveBeenCalledWith(id, child);
+      expect(target.updateChildren).toHaveBeenCalledWith([child]);
+    });
+
+    it('should add new children after old ones', () => {
+      // arrange
+      const target = { updateChildren: jest.fn() };
+      portalConnector.registerTarget('name', target);
+      const children = [{ id: 1 }, { id: 2 }, { id: 3 }];
+
+      // act
+      children.forEach(child => portalConnector.addChild('name', child));
+
+      // assert
+      expect(target.updateChildren).toHaveBeenCalledWith(children);
+    });
+
+    it('should not change order on update', () => {
+      // arrange
+      const target = { updateChildren: jest.fn() };
+      portalConnector.registerTarget('name', target);
+      const children = [{ id: 1 }, { id: 2 }, { id: 3 }];
+      const ids = children.map(child => portalConnector.addChild('name', child));
+
+      // act
+      portalConnector.updateChild(ids[0], { id: 1 });
+      // assert
+      expect(target.updateChildren).toHaveBeenCalledWith(children);
     });
   });
 
@@ -89,18 +116,18 @@ describe('PortalConnector', () => {
 
     it('should call updateChild on the correct target', () => {
       // arrange
-      const target = { updateChild: jest.fn() };
+      const target = { updateChildren: jest.fn() };
       portalConnector.registerTarget('name', target);
-      const child = {};
+      const child = { id: 'first' };
       const id = portalConnector.addChild('name', child);
-      const secondChild = {};
+      const updatedChild = { id: 'updated' };
 
       // act
-      portalConnector.updateChild(id, secondChild);
+      portalConnector.updateChild(id, updatedChild);
 
       // assert
-      expect(target.updateChild).toHaveBeenCalledTimes(2);
-      expect(target.updateChild).toHaveBeenCalledWith(id, secondChild);
+      expect(target.updateChildren).toHaveBeenCalledTimes(2);
+      expect(target.updateChildren).toHaveBeenCalledWith([updatedChild]);
     });
   });
 
@@ -110,9 +137,9 @@ describe('PortalConnector', () => {
       expect(() => portalConnector.updateChild('id')).toThrow();
     });
 
-    it('should call updateChild on the correct target with null', () => {
+    it('should call updateChildren on the correct target with null', () => {
       // arrange
-      const target = { updateChild: jest.fn() };
+      const target = { updateChildren: jest.fn() };
       portalConnector.registerTarget('name', target);
       const child = {};
       const id = portalConnector.addChild('name', child);
@@ -121,8 +148,8 @@ describe('PortalConnector', () => {
       portalConnector.removeChild(id);
 
       // assert
-      expect(target.updateChild).toHaveBeenCalledTimes(2);
-      expect(target.updateChild).toHaveBeenCalledWith(id, null);
+      expect(target.updateChildren).toHaveBeenCalledTimes(2);
+      expect(target.updateChildren).toHaveBeenCalledWith([]);
     });
   });
 });

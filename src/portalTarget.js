@@ -10,11 +10,10 @@ const portalTarget = name => PortalTargetComponent => {
   class PortalTarget extends Component {
     constructor(props) {
       super(props);
-      this.state = { childrenById: {} };
+      this.state = { children: [] };
     }
     componentWillMount() {
       this.props.portalConnector.registerTarget(name, this);
-      this._temporaryChildrenById = {};
     }
 
     componentWillUnmount() {
@@ -22,30 +21,11 @@ const portalTarget = name => PortalTargetComponent => {
     }
 
     render() {
-      return (
-        <PortalTargetComponent>
-          {Object.values(this.state.childrenById)}
-        </PortalTargetComponent>
-      );
+      return <PortalTargetComponent>{this.state.children}</PortalTargetComponent>;
     }
 
-    updateChild(id, child) {
-      if (child == null) {
-        const clonedChildrenById = Object.assign({}, this._temporaryChildrenById);
-        delete clonedChildrenById[id];
-        this._temporaryChildrenById = clonedChildrenById;
-        this.setState({
-          childrenById: this._temporaryChildrenById,
-        });
-      } else {
-        this._temporaryChildrenById = {
-          ...this._temporaryChildrenById,
-          [id]: child,
-        };
-        this.setState({
-          childrenById: this._temporaryChildrenById,
-        });
-      }
+    updateChildren(children) {
+      this.setState({ children });
     }
   }
 
