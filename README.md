@@ -1,15 +1,12 @@
 # react-portals
 
-Unopinionated React library to render content into another place of the React tree.
+Unopinionated React library to render content into another place of the React tree (**without losing the React context**).
 This is especially useful for modals or popovers.
 
 ## Advantages
-- Build your own portals and portal targets for your own needs with the provided higher order components
-- Decide where your portaled content should be rendered by placing the portal target whereever you want it
-in your React tree.
-- Keep your context! react-router or react-redux use the React context to enable communication between
-components, this will not work with traditional modal or portal libraries, as they render your components
-into another React Root (often in document.body).
+- Build your own portals and portal targets for your own needs with the provided **higher order components**
+- Decide where your portaled content should be rendered by placing the portal target whereever you want it in your React tree.
+- **Keep your context!** react-router or react-redux use the React context to enable communication between components, this will not work with traditional modal or portal libraries, as they render your components into another React Root (often in document.body).
 
 ## Installation
 ```
