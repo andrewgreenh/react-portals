@@ -17,6 +17,9 @@ or
 yarn add react-portals
 ```
 
+## Example
+An example implementation of a modal that uses this portal library can be seen [here](https://andreasgruenh.github.io/react-portals-example/).
+
 ## Usage
 ### PortalProvider
 At first you have to add the `PortalProvider` at the top of your React tree. This manages the connection between portals and portalTargets through React context.
@@ -98,6 +101,7 @@ AnimatedTarget.css
   transition: transform .5s, opacity .5s;
 }
 ```
+For this example, we imported `CSSTransitionGroup` from `react-transition-group`. For more info visit the [GitHub Page](https://github.com/reactjs/react-transition-group)
 This will fade all portaled content in. If style the content correctly, you can render it as a modal above the page content.
 
 ## Simple children portal
