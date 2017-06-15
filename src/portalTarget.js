@@ -5,27 +5,23 @@ import { getContext, compose, wrapDisplayName, setDisplayName } from 'recompose'
 import PortalConnector from './PortalConnector';
 
 const portalTarget = name => Component => {
-  const PortalTarget = React.createClass({
-    propTypes: { portalConnector: PropTypes.instanceOf(PortalConnector) },
-
-    getInitialState() {
-      return {
-        childrenById: {},
-      };
-    },
-
+  class PortalTarget extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = { childrenById: null };
+    }
     componentWillMount() {
       this.props.portalConnector.registerTarget(name, this);
       this._temporaryChildrenById = {};
-    },
+    }
 
     componentWillUnmount() {
       this.props.portalConnector.removeTarget(name);
-    },
+    }
 
     render() {
       return <Component>{_.values(this.state.childrenById)}</Component>;
-    },
+    }
 
     updateChild(id, child) {
       if (_.isNil(child)) {
@@ -42,9 +38,10 @@ const portalTarget = name => Component => {
           childrenById: this._temporaryChildrenById,
         });
       }
-    },
-  });
+    }
+  }
 
+  PortalTarget.propTypes = { portalConnector: PropTypes.instanceOf(PortalConnector) };
 
   return compose(
     setDisplayName(wrapDisplayName(Component, 'portalTarget')),

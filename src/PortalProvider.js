@@ -7,7 +7,7 @@ export const portalConnector = new PortalConnector();
 
 const PortalProvider = withContext(
   { portalConnector: PropTypes.instanceOf(PortalConnector) },
-  () => ({ portalConnector })
+  () => ({ portalConnector }),
 )(_.property('children'));
 
 export default PortalProvider;
