@@ -81,7 +81,7 @@ const AnimatedTarget ({ children }) => (
   </CSSTransitionGroup>
 );
 
-export default portalTarget('animated-target')(SimpleTarget);
+export default portalTarget('animated-target')(AnimatedTarget);
 ```
 
 AnimatedTarget.css
