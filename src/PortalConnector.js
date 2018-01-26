@@ -7,9 +7,15 @@ export default class PortalConnector {
     this.targetsByChildId = {};
 
     const methodNames = [
-      'registerTarget', 'removeTarget', 'addChild', 'updateChild', 'removeChild',
+      'registerTarget',
+      'removeTarget',
+      'addChild',
+      'updateChild',
+      'removeChild'
     ];
-    methodNames.forEach(name => { this[name] = this[name].bind(this); });
+    methodNames.forEach(name => {
+      this[name] = this[name].bind(this);
+    });
   }
 
   registerTarget(name, portalTarget) {
@@ -18,7 +24,7 @@ export default class PortalConnector {
     }
     this.targetsByName[name] = {
       targetInstance: portalTarget,
-      childrenById: {},
+      childrenById: {}
     };
   }
 
@@ -27,11 +33,12 @@ export default class PortalConnector {
   }
 
   addChild(targetName, child) {
-    const id = this.nextId++;
+    const id = `portalId${this.nextId++}`;
     const target = this.targetsByName[targetName];
     if (!target) throw new Error(`No target with name ${targetName} found.`);
-    target.childrenById[id] = child;
     this.targetsByChildId[id] = target;
+    if (!child) return id;
+    target.childrenById[id] = child;
     target.targetInstance.updateChildren(Object.values(target.childrenById));
     return id;
   }
@@ -39,16 +46,20 @@ export default class PortalConnector {
   updateChild(id, child) {
     const target = this.targetsByChildId[id];
     if (!target) throw new Error(`No target with id ${id} found.`);
-    target.childrenById = {
-      ...omit(target.childrenById, id),
-      [id]: child,
-    };
+    if (!child && !target.childrenById[id]) return;
+    if (!child) {
+      target.childrenById = omit(target.childrenById, id);
+    } else {
+      target.childrenById[id] = child;
+    }
     target.targetInstance.updateChildren(Object.values(target.childrenById));
   }
 
   removeChild(id) {
     const target = this.targetsByChildId[id];
     if (!target) throw new Error(`No target with id ${id} found.`);
+    delete this.targetsByChildId[id];
+    if (!target.childrenById[id]) return;
     target.childrenById = omit(target.childrenById, id);
     target.targetInstance.updateChildren(Object.values(target.childrenById));
   }

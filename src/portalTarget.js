@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
+import pure from 'recompose/pure';
 import getContext from 'recompose/getContext';
 import setDisplayName from 'recompose/setDisplayName';
 import wrapDisplayName from 'recompose/wrapDisplayName';
@@ -21,7 +22,9 @@ const portalTarget = name => PortalTargetComponent => {
     }
 
     render() {
-      return <PortalTargetComponent>{this.state.children}</PortalTargetComponent>;
+      return (
+        <PortalTargetComponent>{this.state.children}</PortalTargetComponent>
+      );
     }
 
     updateChildren(children) {
@@ -29,11 +32,14 @@ const portalTarget = name => PortalTargetComponent => {
     }
   }
 
-  PortalTarget.propTypes = { portalConnector: PropTypes.instanceOf(PortalConnector) };
+  PortalTarget.propTypes = {
+    portalConnector: PropTypes.instanceOf(PortalConnector)
+  };
 
   return compose(
     setDisplayName(wrapDisplayName(Component, 'portalTarget')),
-    getContext({ portalConnector: PropTypes.instanceOf(PortalConnector) }),
+    pure,
+    getContext({ portalConnector: PropTypes.instanceOf(PortalConnector) })
   )(PortalTarget);
 };
 

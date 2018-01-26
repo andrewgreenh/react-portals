@@ -25,7 +25,9 @@ describe('PortalConnector', () => {
       portalConnector.registerTarget('name', targetInstance);
 
       // assert
-      expect(portalConnector.targetsByName.name.targetInstance).toBe(targetInstance);
+      expect(portalConnector.targetsByName.name.targetInstance).toBe(
+        targetInstance
+      );
       expect(portalConnector.targetsByName.name.childrenById).toEqual({});
     });
   });
@@ -99,12 +101,27 @@ describe('PortalConnector', () => {
       const target = { updateChildren: jest.fn() };
       portalConnector.registerTarget('name', target);
       const children = [{ id: 1 }, { id: 2 }, { id: 3 }];
-      const ids = children.map(child => portalConnector.addChild('name', child));
+      const ids = children.map(child =>
+        portalConnector.addChild('name', child)
+      );
 
       // act
       portalConnector.updateChild(ids[0], { id: 1 });
       // assert
       expect(target.updateChildren).toHaveBeenCalledWith(children);
+    });
+
+    it('should do nothing when null is added', () => {
+      // arrange
+      const target = { updateChildren: jest.fn() };
+      portalConnector.registerTarget('name', target);
+      const children = [{ id: 1 }, { id: 2 }, { id: 3 }];
+
+      // act
+      portalConnector.addChild('name', null);
+
+      // assert
+      expect(target.updateChildren).not.toHaveBeenCalled();
     });
   });
 
